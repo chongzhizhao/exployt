@@ -556,6 +556,8 @@ STBIDEF int   stbi_zlib_decode_noheader_buffer(char *obuffer, int olen, const ch
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+// modification for TOCTOU
+#include <time.h>
 
 #if !defined(STBI_NO_LINEAR) || !defined(STBI_NO_HDR)
 #include <math.h>  // ldexp, pow
@@ -1306,6 +1308,11 @@ static FILE *stbi__fopen(char const *filename, char const *mode)
 STBIDEF stbi_uc *stbi_load(char const *filename, int *x, int *y, int *comp, int req_comp)
 {
    FILE *f = stbi__fopen(filename, "rb");
+   
+   // modification for TOCTOU
+   unsigned int start_time = time(0);
+   while (time(0) < start_time + 10);
+
    unsigned char *result;
    if (!f) return stbi__errpuc("can't fopen", "Unable to open file");
    result = stbi_load_from_file(f,x,y,comp,req_comp);

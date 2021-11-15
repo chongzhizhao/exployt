@@ -5,7 +5,7 @@ class Exployt {
     int flag;
 
     public:
-    Exployt(const int flag = 0){};
+    Exployt(int flag = 0){};
 
     ~Exployt(){};
 
@@ -13,7 +13,7 @@ class Exployt {
 
     int get_flag() {return flag;}
 
-    static int exployt_toctou();
+    int exployt_toctou();
 
 };
 
